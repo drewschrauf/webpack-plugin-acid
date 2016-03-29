@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "rm -rf lib && babel src --out-dir lib",
-    "test": "BABEL_ENV=test mocha --compilers js:babel-register --recursive"
+    "test": "BABEL_ENV=test mocha --compilers js:babel-register --recursive",
+    "watch": "BABEL_ENV=test mocha -w --compilers js:babel-register --recursive"
   },
   "peerDependencies": {
     "ameeno-acid": "0.x",

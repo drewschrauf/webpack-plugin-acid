@@ -14,12 +14,12 @@ describe('AcidStaticSiteGeneratorPlugin', () => {
 
     describe('#constructor', () => {
         it('should accept a config', () => {
-            let a = new A('config');
+            let a = new A({config: 'config'});
             expect(a.config).to.equal('config');
         });
 
         it('should accept a watchPath', () => {
-            let a = new A('config', 'watchPath');
+            let a = new A({watchPath: 'watchPath'});
             expect(a.watchPath).to.equal(path.resolve('watchPath'));
         });
     });
@@ -60,7 +60,7 @@ describe('AcidStaticSiteGeneratorPlugin', () => {
 
             it('should report errors for a bad instantiation', done => {
                 ARewireAPI.__set__('create', AcidFailInstantiation);
-                let a = new A([]);
+                let a = new A({config: []});
                 a.apply(compiler);
                 let c = {assets: {}, errors: []};
                 methods.run(c, () => {
@@ -71,13 +71,27 @@ describe('AcidStaticSiteGeneratorPlugin', () => {
         });
 
         describe('watch-run', () => {
-            it('should start a watch task if a watchPath is provided');
+            let callback;
+            beforeEach(() => {
+                callback = null;
+                ARewireAPI.__Rewire__('watch', {
+                    watchTree: (p, i, f) => {callback = f;}
+                });
+            });
+            it('should instantiate Acid on watch-run', done => {
+                a.apply(compiler);
+                methods['watch-run'](null, () => {
+                    expect(a.acid).to.not.be.undefined;
+                    done();
+                });
+            });
+            it('should start a watch task on watch-run');
         });
 
         describe('emit', () => {
             it('should add an asset for a path', done => {
                 ARewireAPI.__set__('create', Acid);
-                let a = new A(['/one.html', '/about']);
+                let a = new A({config: ['/one.html', '/about']});
                 a.apply(compiler);
                 methods.run(compiler, () => {
                     let c = {assets: {}, errors: []};
@@ -93,7 +107,7 @@ describe('AcidStaticSiteGeneratorPlugin', () => {
 
             it('should report errors for a rejects promise from resolveRoutes', done => {
                 ARewireAPI.__set__('create', AcidFailRoutes);
-                let a = new A(['/one.html']);
+                let a = new A({config: ['/one.html']});
                 a.apply(compiler);
                 methods.run(compiler, () => {
                     let c = {assets: {}, errors: []};
@@ -106,7 +120,7 @@ describe('AcidStaticSiteGeneratorPlugin', () => {
 
             it('should report errors for a rejected promise from renderRoutes', done => {
                 ARewireAPI.__set__('create', AcidFailRender);
-                let a = new A(['/one.html']);
+                let a = new A({config: ['/one.html']});
                 a.apply(compiler);
                 methods.run(compiler, () => {
                     let c = {assets: {}, errors: []};

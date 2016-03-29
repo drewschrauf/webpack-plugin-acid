@@ -4,11 +4,9 @@ import { create } from 'ameeno-acid';
 import hotReload from 'marko/hot-reload';
 
 export default class AcidStaticSiteGeneratorPlugin {
-    constructor(config, watchPath) {
-        this.config = config;
-        if (watchPath) {
-            this.watchPath = path.resolve(watchPath);
-        }
+    constructor(options) {
+        this.config = options.config;
+        this.watchPath = options.watchPath ? path.resolve(options.watchPath) : path.resolve('.');
     }
 
     apply(compiler) {
@@ -23,7 +21,7 @@ export default class AcidStaticSiteGeneratorPlugin {
         });
 
         compiler.plugin('watch-run', (watching, done) => {
-            if (this.watchPath && !this.watch) {
+            if (!this.watch) {
                 this.watch = true;
                 hotReload.enable();
 
