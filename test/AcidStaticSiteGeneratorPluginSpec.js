@@ -72,11 +72,29 @@ describe('AcidStaticSiteGeneratorPlugin', () => {
 
         describe('watch-run', () => {
             let callback;
+            let watchSpy;
+            let watcher;
+            let hotReload;
             beforeEach(() => {
                 callback = null;
-                ARewireAPI.__Rewire__('watch', {
+
+                let watch = {
                     watchTree: (p, i, f) => {callback = f;}
-                });
+                };
+                watchSpy = sinon.spy(watch, 'watchTree');
+
+                hotReload = {
+                    enable: sinon.spy(),
+                    handleFileModified: sinon.spy()
+                };
+
+                watcher = {
+                    invalidate: sinon.spy()
+                }
+
+
+                ARewireAPI.__Rewire__('watch', watch);
+                ARewireAPI.__Rewire__('hotReload', hotReload);
             });
             it('should instantiate Acid on watch-run', done => {
                 a.apply(compiler);
@@ -85,7 +103,43 @@ describe('AcidStaticSiteGeneratorPlugin', () => {
                     done();
                 });
             });
-            it('should start a watch task on watch-run');
+            it('should start a watch task on watch-run', done => {
+                a.apply(compiler);
+                methods['watch-run'](null, () => {
+                    try {
+                        expect(watchSpy).to.have.been.called;
+                        done();
+                    } catch (err) {
+                        done(err);
+                    }
+                });
+            });
+            it('should reload if a template is changed', done => {
+                a.apply(compiler);
+                methods['watch-run'](watcher, () => {
+                    try {
+                        callback('test.marko');
+                        expect(watcher.invalidate).to.have.been.called;
+                        expect(hotReload.handleFileModified).to.have.been.calledWith('test.marko');
+                        done();
+                    } catch (err) {
+                        done(err);
+                    }
+                });
+            });
+            it('should not reload if something other than a template is changed', done => {
+                a.apply(compiler);
+                methods['watch-run'](watcher, () => {
+                    try {
+                        callback('test.marko.js');
+                        expect(watcher.invalidate).to.not.have.been.called;
+                        expect(hotReload.handleFileModified).to.not.have.been.called;
+                        done();
+                    } catch (err) {
+                        done(err);
+                    }
+                });
+            });
         });
 
         describe('emit', () => {
