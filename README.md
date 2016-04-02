@@ -1,6 +1,6 @@
 # webpack-plugin-acid
 
-`webpack-plugin-acid` lets you add your [Acid static site](https://github.com/drewschrauf/ameeno-acid) to your [Webpack](https://webpack.github.io/) build. This lets you automatically watch your templates and build your static site along with the rest of your assets.
+webpack-plugin-acid lets you add your [Acid static site](https://github.com/drewschrauf/ameeno-acid) to your [Webpack](https://webpack.github.io/) build. This lets you automatically watch your templates and build your static site along with the rest of your assets.
 
 It should be noted that this plugin simply adds the compiled HTML of your site to your Webpack output and does not actually pass the assets through your pipeline.
 
