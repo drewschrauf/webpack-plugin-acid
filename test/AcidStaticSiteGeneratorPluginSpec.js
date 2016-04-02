@@ -13,6 +13,12 @@ describe('AcidStaticSiteGeneratorPlugin', () => {
     });
 
     describe('#constructor', () => {
+        it('should accept no arguments', () => {
+            expect(() => {
+                new A();
+            }).to.not.throw();
+        });
+
         it('should accept a config', () => {
             let a = new A({config: 'config'});
             expect(a.config).to.equal('config');

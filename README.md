@@ -29,3 +29,7 @@ Just add the plugin to your webpack.config.js:
 
 - `config` (object, optional) - Causes the Acid instance to be initiated with the passed configuration object rather than loading it from `acid.config.js`.
 - `watchPath` (string, optional) - Choose the directory to watch for changes to `*.marko` files. By default, this will watch for any templates in the entire project (excluding `node_modules`).
+
+## Acknowledgements
+
+This plugin was heavily inspired by (and shamelessly stole code from) [static-site-generator-webpack-plugin](https://github.com/markdalgleish/static-site-generator-webpack-plugin).
