@@ -1,7 +1,7 @@
 {
   "name": "webpack-plugin-acid",
   "version": "0.1.1",
-  "description": "",
+  "description": "Add your Acid static site to your webpack build",
   "main": "index.js",
   "scripts": {
     "ci": "npm run lint && npm run test",
