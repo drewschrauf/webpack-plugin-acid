@@ -15,6 +15,7 @@
     "marko": "3.x"
   },
   "author": "Drew Schrauf <andrew.schrauf@gmail.com>",
+  "repository": "drewschrauf/webpack-plugin-acid",
   "license": "ISC",
   "dependencies": {
     "watch": "^0.17.1"
