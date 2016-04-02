@@ -17,7 +17,6 @@
   "author": "Drew Schrauf <andrew.schrauf@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "bluebird": "^3.1.1",
     "watch": "^0.17.1"
   },
   "devDependencies": {
