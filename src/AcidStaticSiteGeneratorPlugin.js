@@ -7,6 +7,7 @@ export default class AcidStaticSiteGeneratorPlugin {
     constructor(options = {}) {
         this.config = options.config;
         this.watchPath = options.watchPath ? path.resolve(options.watchPath) : path.resolve('.');
+        this.watchExp = options.watchExpressions || [];
     }
 
     apply(compiler) {
@@ -29,12 +30,19 @@ export default class AcidStaticSiteGeneratorPlugin {
                     ignoreDirectoryPattern: /node_modules/
                 }, f => {
                     if (typeof f !== 'string') return;
-                    var isTemplate = f.indexOf('.marko') !== -1 && f.indexOf('.marko.js') === -1;
+                    var isTemplate = f.match(/\.marko$/);
 
                     if (isTemplate) {
                         hotReload.handleFileModified(f);
                         watching.invalidate();
                     }
+
+                    // see if we match a custom extension
+                    this.watchExp.forEach(exp => {
+                        if (f.match(exp)) {
+                            watching.invalidate();
+                        }
+                    });
                 });
             }
 

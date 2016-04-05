@@ -40,7 +40,7 @@ describe('AcidStaticSiteGeneratorPlugin', () => {
         };
         beforeEach(() => {
             ARewireAPI.__set__('create', Acid);
-            a = new A([]);
+            a = new A();
         });
 
         it('should register methods on apply', () => {
@@ -96,7 +96,7 @@ describe('AcidStaticSiteGeneratorPlugin', () => {
 
                 watcher = {
                     invalidate: sinon.spy()
-                }
+                };
 
 
                 ARewireAPI.__Rewire__('watch', watch);
@@ -145,6 +145,22 @@ describe('AcidStaticSiteGeneratorPlugin', () => {
                         done(err);
                     }
                 });
+            });
+            it('should allow additional extensions to be added for reload', done => {
+                ARewireAPI.__set__('create', Acid);
+                let a = new A({watchExpressions: [/\.md$/]});
+                a.apply(compiler);
+                methods['watch-run'](watcher, () => {
+                    try {
+                        callback('/my/post.md');
+                        expect(watcher.invalidate).to.have.been.called;
+                        expect(hotReload.handleFileModified).to.not.have.been.called;
+                        done();
+                    } catch (err) {
+                        done(err);
+                    }
+                });
+
             });
         });
 
