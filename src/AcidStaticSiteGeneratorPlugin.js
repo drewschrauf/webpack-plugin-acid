@@ -38,7 +38,7 @@ export default class AcidStaticSiteGeneratorPlugin {
                     }
 
                     // see if we match a custom extension
-                    this.watchExp.forEach(exp => {
+                    this.acid.watchExpressions.forEach(exp => {
                         if (f.match(exp)) {
                             watching.invalidate();
                         }

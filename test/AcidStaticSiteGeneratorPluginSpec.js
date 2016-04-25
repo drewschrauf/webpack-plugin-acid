@@ -148,7 +148,7 @@ describe('AcidStaticSiteGeneratorPlugin', () => {
             });
             it('should allow additional extensions to be added for reload', done => {
                 ARewireAPI.__set__('create', Acid);
-                let a = new A({watchExpressions: [/\.md$/]});
+                let a = new A();
                 a.apply(compiler);
                 methods['watch-run'](watcher, () => {
                     try {
