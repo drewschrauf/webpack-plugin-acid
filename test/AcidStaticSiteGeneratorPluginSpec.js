@@ -98,7 +98,6 @@ describe('AcidStaticSiteGeneratorPlugin', () => {
                     invalidate: sinon.spy()
                 };
 
-
                 ARewireAPI.__Rewire__('watch', watch);
                 ARewireAPI.__Rewire__('hotReload', hotReload);
             });
@@ -138,6 +137,7 @@ describe('AcidStaticSiteGeneratorPlugin', () => {
                 methods['watch-run'](watcher, () => {
                     try {
                         callback('test.marko.js');
+                        callback({test: 'test'});
                         expect(watcher.invalidate).to.not.have.been.called;
                         expect(hotReload.handleFileModified).to.not.have.been.called;
                         done();
