@@ -55,11 +55,9 @@ export default class AcidStaticSiteGeneratorPlugin {
         compiler.plugin('emit', (compiler, done) => {
             return this.acid.resolveRoutes().then(outputPaths => {
                 return Promise.all(outputPaths.map(outputPath => {
-                    let p = path.parse(outputPath);
-
                     let outputFileName;
-                    if (!p.ext) {
-                        outputFileName = path.join(p.dir, p.base, 'index.html');
+                    if (!outputPath.match(/\.html$/i)) {
+                        outputFileName = [outputPath, 'index.html'].join('/');
                     } else {
                         outputFileName = outputPath;
                     }
