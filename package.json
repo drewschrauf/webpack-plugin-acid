@@ -1,6 +1,6 @@
 {
   "name": "webpack-plugin-acid",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Add your Acid static site to your webpack build",
   "main": "index.js",
   "scripts": {
